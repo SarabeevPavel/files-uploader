@@ -1,27 +1,43 @@
 import { FilesList } from "./FilesList"
+import { FileType } from "../utils/types"
+import { v4 as uuidv4 } from "uuid"
 
 interface FileUploaderProps {
-  files: File[]
-  setFiles: (files: File[]) => void
+  files: FileType[]
+  setFiles: (files: FileType[]) => void
   deleteFile: (filename: string) => void
   setError: () => void
 }
 
-export const FileUploader = ({
+export const FileUploader: React.FC<FileUploaderProps> = ({
   files,
   setFiles,
   setError,
   deleteFile,
-}: FileUploaderProps) => {
+}) => {
   const uploadHandler = (e: any) => {
-    const filesList = e.target.files
-
-    if (filesList.length < 2 || filesList.length > 5) {
+    if (e.target.files.length < 2 || e.target.files.length > 5) {
       setError()
       return
     }
-    filesList[0].isUploading = true
-    setFiles([...filesList])
+
+    let uploadedFiles = [...e.target.files]
+    let newFiles: FileType[] | [] = []
+
+    Object.entries(uploadedFiles).map(([key, file]) => {
+      if (
+        file.type.split("/")[0] === "image" ||
+        file.type.split("/")[0] === "video"
+      ) {
+        const objectUrl = URL.createObjectURL(file)
+        newFiles = [...newFiles, { preview: objectUrl, id: uuidv4(), file }]
+        return () => URL.revokeObjectURL(objectUrl)
+      } else {
+        newFiles = [...newFiles, { preview: null, id: uuidv4(), file }]
+      }
+    })
+
+    setFiles(newFiles)
   }
 
   return (
@@ -30,7 +46,7 @@ export const FileUploader = ({
         files.length ? "bg-accent-light-gray" : "bg-white"
       } border-8 border-accent-gray rounded-lg`}
     >
-      {!files.length ? (
+      {files && !files.length ? (
         <div className="relative group">
           <input
             type="file"
@@ -46,6 +62,7 @@ export const FileUploader = ({
         <FilesList
           files={files}
           deleteFile={(filename: string) => deleteFile(filename)}
+          setFiles={setFiles}
         />
       )}
     </div>

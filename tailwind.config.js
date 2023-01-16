@@ -14,11 +14,12 @@ module.exports = {
             gray: "#EAEBEC",
           },
           dark: {
-            gray: "#EAEBEC",
+            gray: "#EDEDED",
           },
-          gray: "#EDEDED",
+          gray: "#DFDFDF",
           green: "#009933",
           blue: "#0f69fa",
+          red: "#cc1d1d",
         },
         dark: {
           gray: "#49494A",
