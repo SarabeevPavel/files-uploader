@@ -19,9 +19,9 @@ function App() {
           <h1 className="mb-8 text-2xl font-bold text-dark-gray">Test</h1>
           <FileUploader
             files={files}
-            setFiles={(files: FileType[]) => setFiles(files)}
-            deleteFile={(id: string) => deleteFile(id)}
-            setError={() => setOpen(true)}
+            onChange={(files: FileType[]) => setFiles(files)}
+            onDelete={(id: string) => deleteFile(id)}
+            onError={() => setOpen(true)}
           />
         </div>
       </div>

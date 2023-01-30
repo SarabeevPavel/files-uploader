@@ -20,9 +20,12 @@ const Item: React.FC<ItemProps> = ({ file, dragOverlay, style }) => {
           alt={`preview-${file.file.name}`}
           width={100}
           height={100}
+          className="w-20 h-20"
         />
       ) : (
-        <FaRegFileImage />
+        <div className="w-20 h-20">
+          <FaRegFileImage size={30} />
+        </div>
       )}
     </div>
   )

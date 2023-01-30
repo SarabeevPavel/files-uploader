@@ -13,14 +13,14 @@ import { snapCenterToCursor } from "@dnd-kit/modifiers"
 
 interface FilesListProps {
   files: FileType[] | []
-  deleteFile: (filename: string) => void
-  setFiles: (files: FileType[]) => void
+  onDelete: (filename: string) => void
+  onChange: (files: FileType[]) => void
 }
 
 export const FilesList: React.FC<FilesListProps> = ({
-  setFiles,
+  onChange,
   files,
-  deleteFile,
+  onDelete,
 }) => {
   const [activeFile, setActiveFile] = useState<FileType | null>(null)
   const sensors = useDefaultSensors()
@@ -42,7 +42,7 @@ export const FilesList: React.FC<FilesListProps> = ({
     if (active.id !== over.id) {
       const activeIndex = active.data.current.sortable.index
       const overIndex = over.data.current.sortable.index
-      setFiles(arrayMove(files, activeIndex, overIndex))
+      onChange(arrayMove(files, activeIndex, overIndex))
     }
 
     setActiveFile(null)
@@ -64,7 +64,7 @@ export const FilesList: React.FC<FilesListProps> = ({
                   id={file.id}
                   preview={file.preview}
                   file={file.file}
-                  deleteFile={deleteFile}
+                  onDelete={onDelete}
                 />
               ))
             : null}
